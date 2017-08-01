@@ -1,5 +1,5 @@
 // jshint esnext: true
-// var Twit = require('twit');
+var Twit = require('twit');
 
 const pick = (xs) =>
     xs[Math.floor(Math.random()*xs.length)];
@@ -7,11 +7,13 @@ const pick = (xs) =>
 const shortEnough = (tweetText) =>
   (tweetText.length) <= 135;
 
-
-
-// Kinsey Scores and Animals
-//
-//
+const envClient = () =>
+  new Twit({
+    consumer_key:        process.env.KA_CONSUMER_KEY,
+    consumer_secret:     process.env.KA_CONSUMER_SECRET,
+    access_token:        process.env.KA_ACCESS_TOKEN,
+    access_token_secret: process.env.KA_ACCESS_TOKEN_SECRET,
+  });
 
 const kinsey = [
   {score: "0", description: "Exclusively heterosexual"},
@@ -29,12 +31,20 @@ const animals = require('./animals');
 const kinseyAnimal = () => {
   const score = pick(kinsey);
   const animal = pick(animals);
-  return `${animal}\n${score.score}: ${score.description}`;
+  return `${animal}\n\n${score.score}: ${score.description}`;
+};
+
+exports.handler = (_, __, ___) => {
+  const twitter = envClient();
+
+  let status = kinseyAnimal();
+  while (!shortEnough(status)) {
+    status = kinseyAnimal();
+  }
+
+  twitter.post('statuses/update', {status: status})
+    .catch((err) => console.log(error.stack))
+    .then((result) => console.log(result));
 };
 
 
-for (let i = 0; i < 10; i++) {
-  console.log('----');
-  console.log(kinseyAnimal());
-  console.log('----');
-}

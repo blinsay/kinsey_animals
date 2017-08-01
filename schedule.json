@@ -1,0 +1,9 @@
+{
+  "ScheduleEvents": [
+    {
+      "ScheduleName": "post-every-10h",
+      "ScheduleState": "ENABLED",
+      "ScheduleExpression": "rate(10 hours)"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "kinsey-animals",
+  "version": "1.0.0",
+  "description": "k",
+  "main": "index.js",
+  "dependencies": {
+    "twit": "^2.2.9"
+  }
+}
